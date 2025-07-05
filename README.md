@@ -25,3 +25,30 @@ uvicorn main:app --reload
 ```bash
 pytest
 ```
+
+## Docker
+
+A `Dockerfile` is provided to run the service in a container.
+
+### Build the image
+
+```bash
+docker build -t icu-api .
+```
+
+### Run the container
+
+```bash
+docker run -p 8000:8000 \
+  -e GEMINI_API_KEY=your_key \
+  -e CLAUDE_API_KEY=your_key \
+  icu-api
+```
+
+### Example request
+
+```bash
+curl -X POST http://localhost:8000/generate_multi_agent_report \
+  -H 'Content-Type: application/json' \
+  -d '{"stay_id": 1, "predicted_risk": 0.2, "shap_explanation": "age high"}'
+```
