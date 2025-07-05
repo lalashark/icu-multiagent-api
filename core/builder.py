@@ -1,10 +1,9 @@
 # app/core/builder.py
 
 from schema.report import ReportInput, ReportOutput
-from core.llm_factory import get_llm_client
 from core.llm_client_base import LLMClient
 from core import file_io  # 工具 function 放這
-from typing import Tuple
+from prompts import PROMPTS
 import datetime
 
 
@@ -34,11 +33,19 @@ class ReportBuilder:
     def _get_risk_group(self, risk: float) -> str:
         return "l" if risk < 0.10 else "m" if risk < 0.20 else "h"
 
+    def _get_system_prompt(self) -> str:
+        """Return the system prompt based on the configured prompt code."""
+        template = PROMPTS.get(self.prompt_code)
+        if template is None:
+            raise ValueError(f"Unknown prompt code: {self.prompt_code}")
+        today = datetime.date.today().isoformat()
+        return f"{template}\nDate: {today}"
+
     def build(self, data: ReportInput) -> ReportOutput:
         feature_report = self._build_feature_report(data)
 
         prompt = f"[1. Risk = {data.predicted_risk:.2%}]\n" + feature_report
-        response, usage = self.llm.chat(system_prompt="You are an ICU physician.", user_prompt=prompt)
+        response, usage = self.llm.chat(system_prompt=self._get_system_prompt(), user_prompt=prompt)
 
         return ReportOutput(
             stay_id=data.stay_id,
