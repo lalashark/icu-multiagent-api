@@ -1,14 +1,10 @@
-# core/llm_client_gemini.py
-from core.llm_client_base import LLMClient
-import google.generativeai as genai
+from abc import ABC, abstractmethod
+from typing import Tuple, Dict
 
-class GeminiClient(LLMClient):
-    def __init__(self, api_key: str):
-        genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel("gemini-pro")
+class LLMClient(ABC):
+    """Abstract base client for language models."""
 
-    def chat(self, system_prompt, user_prompt):
-        response = self.model.generate_content([
-            {"role": "user", "parts": user_prompt}
-        ])
-        return response.text, {"source": "gemini"}
+    @abstractmethod
+    def chat(self, system_prompt: str, user_prompt: str) -> Tuple[str, Dict]:
+        """Send prompts to the model and return response text and usage info."""
+        raise NotImplementedError

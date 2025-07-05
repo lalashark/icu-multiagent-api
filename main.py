@@ -1,7 +1,7 @@
 # main.py
-
 from fastapi import FastAPI
 from router import multi_agent
+from api import health, generate, evaluate
 
 app = FastAPI(
     title="ICU LLM Multi-Agent Report API",
@@ -9,5 +9,7 @@ app = FastAPI(
     version="0.1.0",
 )
 
-# 註冊多 Agent 路由
+app.include_router(health.router)
+app.include_router(generate.router)
+app.include_router(evaluate.router)
 app.include_router(multi_agent.router)
