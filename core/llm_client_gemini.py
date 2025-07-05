@@ -1,14 +1,17 @@
-# core/llm_client_gemini.py
-from core.llm_client_base import LLMClient
+from typing import Tuple, Dict
 import google.generativeai as genai
 
-class GeminiClient(LLMClient):
-    def __init__(self, api_key: str):
-        genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel("gemini-pro")
+from core.llm_client_base import LLMClient
 
-    def chat(self, system_prompt, user_prompt):
+class GeminiClient(LLMClient):
+    """LLM client for Google Gemini."""
+
+    def __init__(self, api_key: str, model: str = "gemini-pro"):
+        genai.configure(api_key=api_key)
+        self.model = genai.GenerativeModel(model)
+
+    def chat(self, system_prompt: str, user_prompt: str) -> Tuple[str, Dict]:
         response = self.model.generate_content([
-            {"role": "user", "parts": user_prompt}
+            {"role": "user", "parts": system_prompt + "\n" + user_prompt}
         ])
         return response.text, {"source": "gemini"}
