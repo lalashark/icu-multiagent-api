@@ -1,7 +1,6 @@
 # app/schema/report.py
 
 from pydantic import BaseModel, Field
-from typing import Optional
 
 class ReportInput(BaseModel):
     stay_id: int

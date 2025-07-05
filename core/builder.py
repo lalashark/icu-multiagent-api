@@ -1,11 +1,8 @@
 # app/core/builder.py
 
 from schema.report import ReportInput, ReportOutput
-from core.llm_factory import get_llm_client
 from core.llm_client_base import LLMClient
 from core import file_io  # 工具 function 放這
-from typing import Tuple
-import datetime
 
 
 class ReportBuilder:
