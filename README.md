@@ -11,6 +11,11 @@ communicate with language models (Gemini or Claude).
 pip install -r requirements.txt
 ```
 
+The `requirements.txt` file pins `pydantic<2` so that the project remains
+compatible with the `BaseSettings` class used in `config.py`. If you
+upgrade to Pydantic 2.x in the future, remove the version constraint and
+update the code accordingly.
+
 Environment variables `GEMINI_API_KEY` and `CLAUDE_API_KEY` are required
 when using the real LLM services.
 
