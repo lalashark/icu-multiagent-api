@@ -7,6 +7,7 @@ from prompts import PROMPTS
 import datetime
 
 
+
 class ReportBuilder:
     def __init__(self, llm: LLMClient, prompt_code: str):
         self.llm = llm

@@ -1,6 +1,5 @@
 import re
 import pandas as pd
-from typing import List
 
 
 def load_csv(file_path: str) -> pd.DataFrame:

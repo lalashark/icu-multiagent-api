@@ -1,17 +1,12 @@
 from fastapi import APIRouter
-from pydantic import BaseModel
+from schema.report import ReportInput
 from core.builder import ReportBuilder
 from core.llm_factory import create_llm
 
 router = APIRouter()
 
-class GenerateRequest(BaseModel):
-    stay_id: int
-    predicted_risk: float
-    features: dict[str, float | int | str]
-    shap_values: dict[str, float]
-    model: str = "gemini"
-    prompt_code: str = "P1"
+class GenerateRequest(ReportInput):
+    pass
 
 @router.post("/generate")
 def generate(req: GenerateRequest):
